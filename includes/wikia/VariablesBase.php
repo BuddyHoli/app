@@ -1286,7 +1286,7 @@ $wgCreateLanguageWikisWithPath = false;
  * Whether to create new English wikis under the fandom.com domain.
  * @var bool $wgCreateEnglishWikisOnFandomCom
  */
-$wgCreateEnglishWikisOnFandomCom = false;
+$wgCreateEnglishWikisOnFandomCom = true;
 
 /**
  * Wiki description enter by the user on the CNW page. Removed after wiki is created
