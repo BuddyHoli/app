@@ -269,9 +269,10 @@ class CreateNewWikiController extends WikiaController {
 
 		$categories = isset($params['wCategories']) ? $params['wCategories'] : array();
 		$allAges = isset($params['wAllAges']) && !empty( $params['wAllAges'] );
+		$wikiDescription = !empty( $params['wDescription'] ) ? $params['wDescription'] : '';
 
 		$task->call( 'create', $params['wName'], $params['wDomain'], $params['wLanguage'],
-			$params['wVertical'], $params[ 'wDescription' ], $categories, $allAges, time(),
+			$params['wVertical'], $wikiDescription , $categories, $allAges, time(),
 			$this->getContext()->getRequest()->getIP(),
 			$fandomCreatorCommunityId );
 		$task_id = $task->setQueue( Wikia\Tasks\Queues\PriorityQueue::NAME )->queue();
@@ -335,6 +336,9 @@ class CreateNewWikiController extends WikiaController {
 
 			if ( $completed === 1 ) {
 				$this->response->setVal( self::STATUS_FIELD, self::STATUS_OK );
+				// if user was not logged in when starting the CNW process, the editToken is not available
+				// in client JS yet. Send it in the response so it can be used when calling finishCreate.
+				$this->response->setVal( 'editToken',  $this->getContext()->getUser()->getEditToken() );
 			} else {
 				// oh my, an error...
 				$this->response->setCode( 500 );
